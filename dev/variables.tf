@@ -3,8 +3,7 @@ variable "project" {
 }
 
 variable "env" {
-  type    = string
-  default = "dev"
+  type = string
 }
 
 variable "region" {

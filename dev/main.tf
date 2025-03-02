@@ -1,13 +1,16 @@
-resource "google_storage_bucket" "tfstate" {
-  name     = "${var.project}-${var.env}-terraform-remote-backend"
-  location = var.region
+# https://developer.hashicorp.com/terraform/tutorials/gcp-get-started/google-cloud-platform-build
+terraform {
+  required_version = ">= 1.11.0"
 
-  force_destroy               = var.force_destroy
-  public_access_prevention    = "enforced"
-  uniform_bucket_level_access = true
-
-  # オブジェクトのバージョニングを有効にする
-  versioning {
-    enabled = true
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "6.8.0"
+    }
   }
+}
+
+provider "google" {
+  project = var.project
+  region  = var.region
 }

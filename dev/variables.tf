@@ -15,3 +15,8 @@ variable "force_destroy" {
   type    = bool
   default = true
 }
+
+variable "dataset" {
+  type    = string
+  default = "practice_dataset"
+}

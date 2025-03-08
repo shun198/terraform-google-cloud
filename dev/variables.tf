@@ -13,5 +13,5 @@ variable "region" {
 
 variable "force_destroy" {
   type    = bool
-  default = false
+  default = true
 }

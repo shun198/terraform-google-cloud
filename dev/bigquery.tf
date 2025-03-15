@@ -12,6 +12,6 @@ resource "google_bigquery_data_transfer_config" "insert_coupon_usage_query" {
     })
   }
   project              = var.project
-  schedule             = "every 15 minutes"
+  schedule             = "every 15 minutes synchronized"
   service_account_name = null
 }

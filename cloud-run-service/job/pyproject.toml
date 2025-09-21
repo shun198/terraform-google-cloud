@@ -1,0 +1,14 @@
+[project]
+name = "cloud-run-job"
+version = "0.1.0"
+description = "cloud-run-job"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "google-cloud-pubsub>=2.29.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.11.5",
+]

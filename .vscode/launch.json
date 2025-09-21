@@ -1,0 +1,33 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "app: FastAPI",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "main:app",
+                "--port",
+                "8080",
+                "--reload",
+                "--host",
+                "0.0.0.0",
+            ],
+            "jinja": true,
+            "justMyCode": false,
+            "cwd" : "${workspaceFolder}/cloud-run-service/app/",
+            "python": "${workspaceFolder}/cloud-run-service/app/.venv/bin/python"
+        },
+        {
+            "name": "job: Python",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/cloud-run-service/job/main.py",
+            "jinja": true,
+            "justMyCode": false,
+            "cwd" : "${workspaceFolder}/cloud-run-service/job/",
+            "python": "${workspaceFolder}/cloud-run-service/job/.venv/bin/python"
+        }
+    ]
+}

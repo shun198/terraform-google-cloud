@@ -1,0 +1,8 @@
+Dockerfile
+.dockerignore
+__pycache__
+.pytest_cache
+.venv
+Makefile
+.ruff_cache
+encode.py

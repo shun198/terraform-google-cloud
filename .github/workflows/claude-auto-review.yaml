@@ -1,0 +1,32 @@
+name: Claude Auto Review
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+  contents: read
+  id-token: write
+  issues: write
+
+jobs:
+  auto-review:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Auto Review with Claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          allowed_bots: 'dependabot[bot]'
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR_NUMBER: ${{ github.event.pull_request.number }}
+            日本語でコードレビューしてください
+            コードの品質、セキュリティ、可読性、保守性、パフォーマンス、ベストプラクティスに基づいてレビューしてください
+            各種CIの結果を参考にコードの改善点や改善方法について具体的に提案してください
+            terraformのコードとアプリケーションの環境変数の設定の比較も注意してください
+            変更されたコードの中で特に注意が必要な部分を指摘してください

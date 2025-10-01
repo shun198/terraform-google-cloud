@@ -11,3 +11,11 @@ variable "schedule" {
   description = "The schedule in cron format."
   type        = string
 }
+
+variable "cloud_run_job_location" {
+  type = string
+}
+
+variable "cloud_run_job_name" {
+  type = string
+}

@@ -7,7 +7,7 @@ resource "google_pubsub_subscription" "cloud_run_subscription" {
   name  = "${var.project}-subscription"
   topic = google_pubsub_topic.pubsub.name
   push_config {
-    push_endpoint = google_cloud_run_v2_service.cloud_run_service.uri
+    push_endpoint = var.cloud_run_service_uri
     oidc_token {
       service_account_email = google_service_account.cloud_run_sa.email
     }
@@ -39,7 +39,7 @@ resource "google_pubsub_subscription" "pubsub_dlq_subscription" {
 
   bigquery_config {
     drop_unknown_fields   = false
-    table                 = "${var.project}.${google_bigquery_dataset.pubsub_history.dataset_id}.${google_bigquery_table.dlq_errors.table_id}"
+    table                 = "${var.project}.${var.pubsub_history_dataset_id}.${var.pubsub_history_dlq_errors_table_id}"
     use_table_schema      = false
     use_topic_schema      = true
     write_metadata        = true
@@ -53,10 +53,6 @@ resource "google_pubsub_subscription" "pubsub_dlq_subscription" {
     maximum_backoff = "30s"
     minimum_backoff = "5s"
   }
-  depends_on = [
-    google_pubsub_topic.pubsub_dlq,
-    google_bigquery_table.dlq_errors
-  ]
 }
 
 # GCS Notification to Pub/Sub

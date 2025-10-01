@@ -38,7 +38,7 @@ resource "google_cloud_run_v2_job" "cloud_run_job" {
         }
         env {
           name  = "PUBSUB_TOPIC"
-          value = google_pubsub_topic.pubsub.name
+          value = var.google_pubsub_topic_name
         }
       }
       service_account = google_service_account.cloud_run_jobs_sa.email

@@ -16,10 +16,12 @@ provider "google" {
 }
 
 module "pubsub" {
-  source = "../../modules/pubsub"
-
-  project                         = var.project
-  pubsub_notification_bucket_name = module.gcs.pubsub_notification_bucket_name
+  source                             = "../../modules/pubsub"
+  project                            = var.project
+  pubsub_notification_bucket_name    = module.gcs.pubsub_notification_bucket_name
+  cloud_run_service_uri              = module.cloud_run.cloud_run_service_uri
+  pubsub_history_dataset_id          = module.bigquery.pubsub_history_dataset_id
+  pubsub_history_dlq_errors_table_id = module.bigquery.pubsub_history_dataset_id.dlq_errors_table_id
 }
 
 module "gcs" {
@@ -40,6 +42,7 @@ module "cloud_run" {
   expire_at_ttl_collection_name = module.firestore.expire_at_ttl_collection_name
   app_artifact_repository_id    = module.artifact_registry.app_artifact_repository_id
   job_artifact_repository_id    = module.artifact_registry.job_artifact_repository_id
+  google_pubsub_topic_name      = module.pubsub.google_pubsub_topic_name
 }
 
 module "bigquery" {
@@ -53,11 +56,12 @@ module "firestore" {
 }
 
 module "scheduler" {
-  source = "../../modules/scheduler"
-
-  project_number = var.project_number
-  region         = var.region
-  schedule       = var.schedule
+  source                 = "../../modules/scheduler"
+  project_number         = var.project_number
+  region                 = var.region
+  schedule               = var.schedule
+  cloud_run_job_location = module.cloud_run.cloud_run_job_location
+  cloud_run_job_name     = module.cloud_run.cloud_run_job_name
 }
 
 module "bigquery_data_transfer" {

@@ -3,8 +3,7 @@ variable "project" {
 }
 
 variable "region" {
-  type    = string
-  default = "us-central1"
+  type = string
 }
 
 variable "expire_at_ttl_collection_name" {
@@ -16,5 +15,9 @@ variable "app_artifact_repository_id" {
 }
 
 variable "job_artifact_repository_id" {
+  type = string
+}
+
+variable "google_pubsub_topic_name" {
   type = string
 }

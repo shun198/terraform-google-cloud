@@ -15,24 +15,21 @@ provider "google" {
   region  = var.region
 }
 
-module "pubsub" {
-  source                             = "../../modules/pubsub"
-  project                            = var.project
-  pubsub_notification_bucket_name    = module.gcs.pubsub_notification_bucket_name
-  cloud_run_service_uri              = module.cloud_run.cloud_run_service_uri
-  pubsub_history_dataset_id          = module.bigquery.pubsub_history_dataset_id
-  pubsub_history_dlq_errors_table_id = module.bigquery.pubsub_history_dataset_id.dlq_errors_table_id
-}
-
-module "gcs" {
-  source  = "../../modules/gcs"
-  project = var.project
-}
-
 module "artifact_registry" {
   source  = "../../modules/artifact_registry"
   project = var.project
   region  = var.region
+}
+
+module "bigquery" {
+  source  = "../../modules/bigquery"
+  project = var.project
+}
+
+module "bigquery_data_transfer" {
+  source  = "../../modules/bigquery_data_transfer"
+  project = var.project
+  dataset = module.bigquery.pubsub_history_dataset_id
 }
 
 module "cloud_run" {
@@ -45,14 +42,47 @@ module "cloud_run" {
   google_pubsub_topic_name      = module.pubsub.google_pubsub_topic_name
 }
 
-module "bigquery" {
-  source  = "../../modules/bigquery"
-  project = var.project
+module "cloud_sql" {
+  source         = "../../modules/cloud_sql"
+  project        = var.project
+  project_number = var.project_number
+  region         = var.region
 }
 
 module "firestore" {
   source  = "../../modules/firestore"
   project = var.project
+}
+
+module "gcs" {
+  source  = "../../modules/gcs"
+  project = var.project
+}
+
+module "gke" {
+  source  = "../../modules/gke"
+  project = var.project
+  region  = var.region
+}
+
+module "iam" {
+  source         = "../../modules/iam"
+  project        = var.project
+  project_number = var.project_number
+}
+
+module "monitoring" {
+  source  = "../../modules/monitoring"
+  project = var.project
+}
+
+module "pubsub" {
+  source                             = "../../modules/pubsub"
+  project                            = var.project
+  pubsub_notification_bucket_name    = module.gcs.pubsub_notification_bucket_name
+  cloud_run_service_uri              = module.cloud_run.cloud_run_service_uri
+  pubsub_history_dataset_id          = module.bigquery.pubsub_history_dataset_id
+  pubsub_history_dlq_errors_table_id = module.bigquery.pubsub_history_dataset_id.dlq_errors_table_id
 }
 
 module "scheduler" {
@@ -62,10 +92,4 @@ module "scheduler" {
   schedule               = var.schedule
   cloud_run_job_location = module.cloud_run.cloud_run_job_location
   cloud_run_job_name     = module.cloud_run.cloud_run_job_name
-}
-
-module "bigquery_data_transfer" {
-  source  = "../../modules/bigquery_data_transfer"
-  project = var.project
-  dataset = module.bigquery.pubsub_history_dataset_id
 }

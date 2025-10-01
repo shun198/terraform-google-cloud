@@ -51,17 +51,10 @@ module "artifact_registry" {
 #   }
 # }
 
-# module "bigquery" {
-#   source = "../modules/bigquery"
-
-#   project                         = var.project
-#   dataset_name                    = var.bigquery_dataset
-#   table_name                      = var.bigquery_table
-#   table_schema                    = file("../modules/bigquery/schema.json")
-#   location                        = var.region
-#   pubsub_topic                    = var.pubsub_topic
-#   gcp_credentials                 = var.gcp_credentials
-# }
+module "bigquery" {
+  source  = "../../modules/bigquery"
+  project = var.project
+}
 
 module "firestore" {
   source  = "../../modules/firestore"

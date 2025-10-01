@@ -2,7 +2,7 @@ resource "google_cloud_scheduler_job" "job_scheduler" {
   name        = "trigger-sample-job"
   region      = var.region
   description = "Trigger Cloud Run Job every 1 hour"
-  schedule    = "0 9-17 * * *"
+  schedule    = var.schedule
   time_zone   = "Asia/Tokyo"
 
   http_target {

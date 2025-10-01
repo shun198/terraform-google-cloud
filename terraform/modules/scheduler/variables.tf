@@ -1,7 +1,3 @@
-variable "project" {
-  type = string
-}
-
 variable "project_number" {
   type = string
 }
@@ -14,5 +10,4 @@ variable "region" {
 variable "schedule" {
   description = "The schedule in cron format."
   type        = string
-  default     = "0 9-17 * * *"
 }

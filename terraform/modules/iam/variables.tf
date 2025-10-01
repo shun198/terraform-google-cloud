@@ -10,9 +10,3 @@ variable "region" {
   type    = string
   default = "us-central1"
 }
-
-variable "schedule" {
-  description = "The schedule in cron format."
-  type        = string
-  default     = "0 9-17 * * *"
-}

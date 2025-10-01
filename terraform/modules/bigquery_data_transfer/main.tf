@@ -7,7 +7,7 @@ resource "google_bigquery_data_transfer_config" "insert_coupon_usage_query" {
   location                  = "us"
   notification_pubsub_topic = null
   params = {
-    query = templatefile("./shared/query/insert_coupon_usage.sql", {
+    query = templatefile("./insert_coupon_usage.sql", {
       dataset = var.dataset
     })
   }

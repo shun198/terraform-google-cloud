@@ -1,1 +1,0 @@
-shared/query/insert_coupon_usage.sql

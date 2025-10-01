@@ -27,6 +27,12 @@ module "gcs" {
   project = var.project
 }
 
+module "artifact_registry" {
+  source  = "../../modules/artifact_registry"
+  project = var.project
+  region  = var.region
+}
+
 # module "cloud_run" {
 #   source = "../modules/cloud_run"
 
@@ -57,29 +63,16 @@ module "gcs" {
 #   gcp_credentials                 = var.gcp_credentials
 # }
 
-# module "firestore" {
-#   source = "../modules/firestore"
-
-#   project = var.project
-#   region  = var.region
-# }
-
-# module "artifact_registry" {
-#   source = "../modules/artifact_registry"
-
-#   project      = var.project
-#   location     = var.region
-#   repository   = "request-repo"
-#   format       = "DOCKER"
-#   docker_image = "gcr.io/${var.project}/request:latest"
-# }
+module "firestore" {
+  source  = "../../modules/firestore"
+  project = var.project
+}
 
 # module "scheduler" {
 #   source = "../modules/scheduler"
 
 #   project          = var.project
 #   region           = var.region
-#   schedule         = "every 24 hours"
 #   time_zone        = "Asia/Tokyo"
 #   pubsub_topic     = var.pubsub_topic
 #   gcp_credentials  = var.gcp_credentials

@@ -7,7 +7,14 @@ variable "region" {
   default = "us-central1"
 }
 
-variable "collection" {
-  type    = string
-  default = "collection"
+variable "expire_at_ttl_collection_name" {
+  type = string
+}
+
+variable "app_artifact_repository_id" {
+  type = string
+}
+
+variable "job_artifact_repository_id" {
+  type = string
 }

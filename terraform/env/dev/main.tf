@@ -34,10 +34,12 @@ module "artifact_registry" {
 }
 
 module "cloud_run" {
-  source     = "../../modules/cloud_run"
-  project    = var.project
-  region     = var.region
-  collection = module.firestore.collection_name
+  source                        = "../../modules/cloud_run"
+  project                       = var.project
+  region                        = var.region
+  expire_at_ttl_collection_name = module.firestore.expire_at_ttl_collection_name
+  app_artifact_repository_id    = module.artifact_registry.app_artifact_repository_id
+  job_artifact_repository_id    = module.artifact_registry.job_artifact_repository_id
 }
 
 module "bigquery" {
@@ -61,5 +63,5 @@ module "scheduler" {
 module "bigquery_data_transfer" {
   source  = "../../modules/bigquery_data_transfer"
   project = var.project
-  dataset = module.bigquery_data_transfer.bigquery_dataset_id
+  dataset = module.bigquery.pubsub_history_dataset_id
 }

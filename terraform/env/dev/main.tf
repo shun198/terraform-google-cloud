@@ -42,13 +42,6 @@ module "cloud_run" {
   google_pubsub_topic_name      = module.pubsub.google_pubsub_topic_name
 }
 
-module "cloud_sql" {
-  source         = "../../modules/cloud_sql"
-  project        = var.project
-  project_number = var.project_number
-  region         = var.region
-}
-
 module "firestore" {
   source  = "../../modules/firestore"
   project = var.project

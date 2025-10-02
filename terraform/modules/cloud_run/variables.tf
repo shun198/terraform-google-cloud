@@ -21,3 +21,7 @@ variable "job_artifact_repository_id" {
 variable "google_pubsub_topic_name" {
   type = string
 }
+
+variable "cloud_run_jobs_service_account_email" {
+  type = string
+}

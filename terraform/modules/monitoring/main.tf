@@ -96,7 +96,7 @@ data "google_monitoring_notification_channel" "notify_channel" {
 
 # scheduled queryのtransfer_config_idのみを抽出
 locals {
-  icu_tc_array = split("/", google_bigquery_data_transfer_config.insert_coupon_usage_query.id)
+  icu_tc_array = split("/", var.insert_coupon_user_history_scheduled_query_id)
   icu_tc_id    = element(local.icu_tc_array, length(local.icu_tc_array) - 1)
 }
 

@@ -19,3 +19,7 @@ variable "cloud_run_job_location" {
 variable "cloud_run_job_name" {
   type = string
 }
+
+variable "cloud_scheduler_service_account_email" {
+  type = string
+}

@@ -1,6 +1,6 @@
 # Google Container Engine (GKE) Cluster
 resource "google_container_cluster" "primary" {
-  name                     = "${var.project}-gke-cluster"
+  name                     = "${var.project}-cluster"
   location                 = var.region
   project                  = var.project
   networking_mode          = "VPC_NATIVE"

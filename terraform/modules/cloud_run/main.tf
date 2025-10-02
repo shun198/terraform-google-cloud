@@ -41,7 +41,7 @@ resource "google_cloud_run_v2_job" "cloud_run_job" {
           value = var.google_pubsub_topic_name
         }
       }
-      service_account = google_service_account.cloud_run_jobs_sa.email
+      service_account = var.cloud_run_jobs_service_account_email
     }
   }
 }

@@ -7,11 +7,11 @@ resource "google_bigquery_data_transfer_config" "insert_coupon_usage_query" {
   location                  = "us"
   notification_pubsub_topic = null
   params = {
-    query = templatefile("./insert_coupon_usage.sql", {
+    query = templatefile("${path.module}/templates/insert_coupon_usage.sql", {
       dataset = var.dataset
     })
   }
   project              = var.project
   schedule             = "every 5 minutes synchronized"
-  service_account_name = google_service_account.scheduled_query_service_account.email
+  service_account_name = var.scheduled_query_service_account_email
 }

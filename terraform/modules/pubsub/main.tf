@@ -9,7 +9,7 @@ resource "google_pubsub_subscription" "cloud_run_subscription" {
   push_config {
     push_endpoint = var.cloud_run_service_uri
     oidc_token {
-      service_account_email = google_service_account.cloud_run_sa.email
+      service_account_email = var.cloud_run_service_account_email
     }
     attributes = {
       x-goog-version = "v1"
@@ -43,7 +43,7 @@ resource "google_pubsub_subscription" "pubsub_dlq_subscription" {
     use_table_schema      = false
     use_topic_schema      = true
     write_metadata        = true
-    service_account_email = google_service_account.dlq_to_bq_sa.email
+    service_account_email = var.dlq_to_bq_service_account_email
   }
 
   expiration_policy {

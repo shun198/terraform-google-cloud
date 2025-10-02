@@ -1,11 +1,12 @@
-INSERT INTO `${dataset}.coupon_usage_history`
-SELECT
-  id,
-  user_id,
-  coupon_id,
-  created_at,
-  updated_at,
-  CURRENT_TIMESTAMP() as inserted_at
-FROM `${dataset}.coupon_usage`
-WHERE
-  created_at >= TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 5 MINUTE)
+MERGE INTO ${dataset}.used_coupons AS target
+USING (
+    SELECT user_id, coupon_code, used_at
+    FROM ${dataset}.coupon_usage
+    WHERE is_used = TRUE
+)
+AS source ON target.user_id = source.user_id
+AND target.coupon_code = source.coupon_code
+-- 条件に一致しなければInsertする
+WHEN NOT MATCHED THEN
+    INSERT (user_id, coupon_code, used_at, migrated_at)
+    VALUES (source.user_id, source.coupon_code, source.used_at, CURRENT_TIMESTAMP());

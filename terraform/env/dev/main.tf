@@ -55,9 +55,12 @@ module "gcs" {
 }
 
 module "gke" {
-  source  = "../../modules/gke"
-  project = var.project
-  region  = var.region
+  source       = "../../modules/gke"
+  project      = var.project
+  region       = var.region
+  vpc_name     = module.vpc.vpc_name
+  subnet1_name = module.vpc.subnet_1_name
+  subnet2_name = module.vpc.subnet_2_name
 }
 
 module "iam" {
@@ -91,4 +94,9 @@ module "scheduler" {
   cloud_run_job_location                = module.cloud_run.cloud_run_job_location
   cloud_run_job_name                    = module.cloud_run.cloud_run_job_name
   cloud_scheduler_service_account_email = module.iam.cloud_scheduler_service_account_email
+}
+
+module "vpc" {
+  source  = "../../modules/vpc"
+  project = var.project
 }

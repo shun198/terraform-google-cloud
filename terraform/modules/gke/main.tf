@@ -17,6 +17,6 @@ resource "google_container_cluster" "cluster" {
       "https://www.googleapis.com/auth/cloud-platform"
     ]
     tags         = ["gke-node"]
-    disk_size_gb = 10
+    disk_size_gb = 30
   }
 }

@@ -30,5 +30,5 @@ variable "bq_subscription_service_account_email" {
 }
 
 variable "bq_subscription_history_table_id" {
-  type        = string
+  type = string
 }

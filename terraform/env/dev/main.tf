@@ -78,15 +78,15 @@ module "monitoring" {
 }
 
 module "pubsub" {
-  source                             = "../../modules/pubsub"
-  project                            = var.project
-  pubsub_notification_bucket_name    = module.gcs.pubsub_notification_bucket_name
-  cloud_run_service_uri              = module.cloud_run.cloud_run_service_uri
-  pubsub_history_dataset_id          = module.bigquery.pubsub_history_dataset_id
-  pubsub_history_dlq_errors_table_id = module.bigquery.dlq_errors_table_id
-  cloud_run_service_account_email    = module.iam.cloud_run_service_account_email
-  bq_subscription_service_account_email    = module.iam.bq_subscription_service_account_email
-  bq_subscription_history_table_id   = module.bigquery.pubsub_subscription_table_id
+  source                                = "../../modules/pubsub"
+  project                               = var.project
+  pubsub_notification_bucket_name       = module.gcs.pubsub_notification_bucket_name
+  cloud_run_service_uri                 = module.cloud_run.cloud_run_service_uri
+  pubsub_history_dataset_id             = module.bigquery.pubsub_history_dataset_id
+  pubsub_history_dlq_errors_table_id    = module.bigquery.dlq_errors_table_id
+  cloud_run_service_account_email       = module.iam.cloud_run_service_account_email
+  bq_subscription_service_account_email = module.iam.bq_subscription_service_account_email
+  bq_subscription_history_table_id      = module.bigquery.pubsub_subscription_table_id
 }
 
 module "scheduler" {

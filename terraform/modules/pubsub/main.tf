@@ -65,10 +65,11 @@ resource "google_pubsub_subscription" "bq_subscription" {
   topic = google_pubsub_topic.pubsub_bq_topic.id
 
   bigquery_config {
-    table               = "${var.project}.${var.pubsub_history_dataset_id}.${var.bq_subscription_history_table_id}"
-    use_topic_schema    = false
-    write_metadata      = true
-    drop_unknown_fields = true
+    table                 = "${var.project}.${var.pubsub_history_dataset_id}.${var.bq_subscription_history_table_id}"
+    use_table_schema      = false
+    use_topic_schema      = false
+    write_metadata        = true
+    drop_unknown_fields   = true
     service_account_email = var.bq_subscription_service_account_email
   }
 }

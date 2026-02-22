@@ -87,13 +87,21 @@ resource "google_project_iam_member" "cloud_scheduler_jobs_invoker" {
 }
 
 resource "google_service_account" "bq_subscription" {
-  account_id   = "dlq-to-bq-sa"
-  display_name = "Service Account for DLQ to BigQuery push"
+  account_id   = "bq-subscription-sa"
+  display_name = "Service Account for BigQuery Subscription"
 }
+
 resource "google_project_iam_member" "bq_data_editor" {
   project = var.project
   role    = "roles/bigquery.dataEditor"
   member  = "serviceAccount:${google_service_account.bq_subscription.email}"
+}
+
+# https://docs.cloud.google.com/pubsub/docs/create-bigquery-subscription?hl=ja#assign_roles_to_service_accounts
+resource "google_service_account_iam_member" "allow_pubsub_sa_to_get_token" {
+  service_account_id = google_service_account.bq_subscription.name
+  role               = "roles/iam.serviceAccountTokenCreator"
+  member             = "serviceAccount:service-${var.project_number}@gcp-sa-pubsub.iam.gserviceaccount.com"
 }
 
 resource "google_project_iam_member" "pubsub_subscriber" {

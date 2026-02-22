@@ -43,17 +43,26 @@ resource "google_bigquery_table" "bq_subscription_history" {
   description         = "History of messages sent to the subscription"
   expiration_time     = 0
   project             = var.project
-  schema = jsonencode([
-    {
-      name = "data"
-      type = "STRING"
-      mode = "NULLABLE"
-    },
-    {
-      name = "update_date"
-      type = "TIMESTAMP"
-      mode = "NULLABLE"
-    }
-  ])
+  schema = jsonencode([{
+    mode = "NULLABLE"
+    name = "subscription_name"
+    type = "STRING"
+    }, {
+    mode = "NULLABLE"
+    name = "message_id"
+    type = "STRING"
+    }, {
+    mode = "NULLABLE"
+    name = "publish_time"
+    type = "TIMESTAMP"
+    }, {
+    mode = "NULLABLE"
+    name = "data"
+    type = "STRING"
+    }, {
+    mode = "NULLABLE"
+    name = "attributes"
+    type = "STRING"
+  }])
   table_id = "bq_subscription_history"
 }

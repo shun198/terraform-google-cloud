@@ -1,4 +1,5 @@
 import base64
+import json
 import logging
 import os
 
@@ -37,12 +38,14 @@ async def index(request: Request):
     pubsub_message = envelope["message"]
     if isinstance(pubsub_message, dict) and "data" in pubsub_message:
         try:
-            decoded_message = base64.b64decode(pubsub_message["data"]).decode("utf-8").strip()
-            logger.info(f"decoded_message: {decoded_message}")
-            if firestore_service.if_record_exists(decoded_message):
+            decoded_str = base64.b64decode(pubsub_message["data"]).decode("utf-8").strip()
+            logger.info(f"decoded_message: {decoded_str}")
+            if firestore_service.if_record_exists(decoded_str):
                 logger.info("record already exists")
                 return Response(status_code=status.HTTP_204_NO_CONTENT)
-            firestore_service.enter_single_record(decoded_message)
+            logger.info("enter firestore record")
+            firestore_service.enter_single_record(decoded_str)
+            logger.info("request succeeded")
             return Response(status_code=status.HTTP_200_OK)
         except Exception as e:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"exception happened: {e}")

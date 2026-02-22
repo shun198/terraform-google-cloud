@@ -17,7 +17,8 @@
             "jinja": true,
             "justMyCode": false,
             "cwd" : "${workspaceFolder}/cloud-run-service/app/",
-            "python": "${workspaceFolder}/cloud-run-service/app/.venv/bin/python"
+            "python": "${workspaceFolder}/cloud-run-service/app/.venv/bin/python",
+            "envFile": "${workspaceFolder}/cloud-run-service/app/.env"
         },
         {
             "name": "job: Python",

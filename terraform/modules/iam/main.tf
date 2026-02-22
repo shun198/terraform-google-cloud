@@ -31,12 +31,24 @@ resource "google_project_iam_custom_role" "custom_bigquery_transfer_role" {
 
 resource "google_service_account" "cloud_run_sa" {
   account_id   = "cloud-run-service-invoker"
-  display_name = "Cloud Run Invoker"
+  display_name = "Cloud Run Service Invoker"
 }
 
 resource "google_project_iam_member" "cloud_run_service_invoker" {
   project = var.project
   role    = "roles/run.invoker"
+  member  = "serviceAccount:${google_service_account.cloud_run_sa.email}"
+}
+
+resource "google_project_iam_member" "cloud_run_firestore_admin" {
+  project = var.project
+  role    = "roles/datastore.owner"
+  member  = "serviceAccount:${google_service_account.cloud_run_sa.email}"
+}
+
+resource "google_project_iam_member" "cloud_run_bigquery_admin" {
+  project = var.project
+  role    = "roles/bigquery.admin"
   member  = "serviceAccount:${google_service_account.cloud_run_sa.email}"
 }
 

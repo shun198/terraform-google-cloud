@@ -25,3 +25,7 @@ variable "google_pubsub_topic_name" {
 variable "cloud_run_jobs_service_account_email" {
   type = string
 }
+
+variable "cloud_run_service_account_email" {
+  type = string
+}

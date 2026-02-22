@@ -42,6 +42,7 @@ module "cloud_run" {
   job_artifact_repository_id           = module.artifact_registry.job_artifact_repository_id
   google_pubsub_topic_name             = module.pubsub.google_pubsub_topic_name
   cloud_run_jobs_service_account_email = module.iam.cloud_run_jobs_service_account_email
+  cloud_run_service_account_email      = module.iam.cloud_run_service_account_email
 }
 
 module "firestore" {

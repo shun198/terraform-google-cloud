@@ -19,6 +19,7 @@ resource "google_cloud_run_v2_service" "cloud_run_service" {
         container_port = 8080
       }
     }
+    service_account = var.cloud_run_jobs_service_account_email
   }
 }
 

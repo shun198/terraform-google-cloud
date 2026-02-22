@@ -5,7 +5,7 @@ output "scheduled_query_service_account_email" {
 
 output "cloud_run_service_account_email" {
   value       = google_service_account.cloud_run_sa.email
-  description = "The email of the service account for Cloud Run"
+  description = "The email of the service account for Cloud Run Service"
 }
 
 output "cloud_run_jobs_service_account_email" {

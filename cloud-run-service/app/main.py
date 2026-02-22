@@ -5,19 +5,28 @@ import os
 
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.responses import Response
-from google.cloud import firestore
+from google.cloud import firestore, pubsub_v1
 from service.firestore import FirestoreService
+from service.bq_subscription import SendHistoryToBigQueryService
 
 app = FastAPI()
 
-db = firestore.Client(project=os.environ.get("GCP_PROJECT"))
+project = os.environ.get("GCP_PROJECT")
+
+db = firestore.Client(project=project)
 
 collection = db.collection(os.environ.get("FIRESTORE_COLLECTION_NAME"))
+
+topic = db.collection(os.environ.get("PUBSUB_TOPIC_NAME"))
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 firestore_service = FirestoreService(logger, collection)
+
+publisher = pubsub_v1.PublisherClient()
+
+bq_subscription_service = SendHistoryToBigQueryService(logger, publisher, topic)
 
 
 @app.post("/")
@@ -45,6 +54,7 @@ async def index(request: Request):
                 return Response(status_code=status.HTTP_204_NO_CONTENT)
             logger.info("enter firestore record")
             firestore_service.enter_single_record(decoded_str)
+            bq_subscription_service.regist(decoded_str)
             logger.info("request succeeded")
             return Response(status_code=status.HTTP_200_OK)
         except Exception as e:

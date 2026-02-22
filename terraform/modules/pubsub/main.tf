@@ -15,6 +15,7 @@ resource "google_pubsub_subscription" "cloud_run_subscription" {
       x-goog-version = "v1"
     }
   }
+  filter = null
   dead_letter_policy {
     dead_letter_topic     = google_pubsub_topic.pubsub_dlq.id
     max_delivery_attempts = 5
@@ -43,7 +44,7 @@ resource "google_pubsub_subscription" "pubsub_dlq_subscription" {
     use_table_schema      = false
     use_topic_schema      = true
     write_metadata        = true
-    service_account_email = var.dlq_to_bq_service_account_email
+    service_account_email = var.bq_subscription_service_account_email
   }
 
   expiration_policy {
@@ -52,6 +53,23 @@ resource "google_pubsub_subscription" "pubsub_dlq_subscription" {
   retry_policy {
     maximum_backoff = "30s"
     minimum_backoff = "5s"
+  }
+}
+
+resource "google_pubsub_topic" "pubsub_bq_topic" {
+  name = "${var.project}-bq-topic"
+}
+
+resource "google_pubsub_subscription" "bq_subscription" {
+  name  = "shun198-bq-subscription"
+  topic = google_pubsub_topic.pubsub_bq_topic.id
+
+  bigquery_config {
+    table               = "${var.project}.${var.pubsub_history_dataset_id}.${var.bq_subscription_history_table_id}"
+    use_topic_schema    = false
+    write_metadata      = true
+    drop_unknown_fields = true
+    service_account_email = var.bq_subscription_service_account_email
   }
 }
 

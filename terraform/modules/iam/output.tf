@@ -18,7 +18,7 @@ output "cloud_scheduler_service_account_email" {
   description = "The email of the service account for Cloud Scheduler"
 }
 
-output "dlq_to_bq_service_account_email" {
-  value       = google_service_account.dlq_to_bq_sa.email
-  description = "The email of the service account for DLQ to BQ"
+output "bq_subscription_service_account_email" {
+  value       = google_service_account.bq_subscription.email
+  description = "The email of the service account for BQ Subscription"
 }

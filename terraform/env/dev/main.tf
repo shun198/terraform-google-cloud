@@ -34,15 +34,16 @@ module "bigquery_data_transfer" {
 }
 
 module "cloud_run" {
-  source                               = "../../modules/cloud_run"
-  project                              = var.project
-  region                               = var.region
-  expire_at_ttl_collection_name        = module.firestore.expire_at_ttl_collection_name
-  app_artifact_repository_id           = module.artifact_registry.app_artifact_repository_id
-  job_artifact_repository_id           = module.artifact_registry.job_artifact_repository_id
-  google_pubsub_topic_name             = module.pubsub.google_pubsub_topic_name
-  cloud_run_jobs_service_account_email = module.iam.cloud_run_jobs_service_account_email
-  cloud_run_service_account_email      = module.iam.cloud_run_service_account_email
+  source                                   = "../../modules/cloud_run"
+  project                                  = var.project
+  region                                   = var.region
+  expire_at_ttl_collection_name            = module.firestore.expire_at_ttl_collection_name
+  app_artifact_repository_id               = module.artifact_registry.app_artifact_repository_id
+  job_artifact_repository_id               = module.artifact_registry.job_artifact_repository_id
+  google_pubsub_topic_name                 = module.pubsub.google_pubsub_topic_name
+  cloud_run_jobs_service_account_email     = module.iam.cloud_run_jobs_service_account_email
+  cloud_run_service_account_email          = module.iam.cloud_run_service_account_email
+  google_pubsub_bq_subscription_topic_name = module.pubsub.google_pubsub_bq_subscription_topic_name
 }
 
 module "firestore" {
@@ -84,7 +85,8 @@ module "pubsub" {
   pubsub_history_dataset_id          = module.bigquery.pubsub_history_dataset_id
   pubsub_history_dlq_errors_table_id = module.bigquery.dlq_errors_table_id
   cloud_run_service_account_email    = module.iam.cloud_run_service_account_email
-  dlq_to_bq_service_account_email    = module.iam.dlq_to_bq_service_account_email
+  bq_subscription_service_account_email    = module.iam.bq_subscription_service_account_email
+  bq_subscription_history_table_id   = module.bigquery.pubsub_subscription_table_id
 }
 
 module "scheduler" {

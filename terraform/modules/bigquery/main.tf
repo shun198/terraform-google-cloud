@@ -35,3 +35,25 @@ resource "google_bigquery_table" "dlq_errors" {
   }])
   table_id = "dlq_errors"
 }
+
+resource "google_bigquery_table" "bq_subscription_history" {
+  clustering          = null
+  dataset_id          = google_bigquery_dataset.pubsub_history.dataset_id
+  deletion_protection = false
+  description         = "History of messages sent to the subscription"
+  expiration_time     = 0
+  project             = var.project
+  schema = jsonencode([
+    {
+      name = "data"
+      type = "STRING"
+      mode = "NULLABLE"
+    },
+    {
+      name = "update_date"
+      type = "TIMESTAMP"
+      mode = "NULLABLE"
+    }
+  ])
+  table_id = "bq_subscription_history"
+}

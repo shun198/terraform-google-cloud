@@ -15,11 +15,15 @@ resource "google_cloud_run_v2_service" "cloud_run_service" {
         name  = "FIRESTORE_COLLECTION_NAME"
         value = var.expire_at_ttl_collection_name
       }
+      env {
+        name  = "BQ_PUBSUB_TOPIC_NAME"
+        value = var.google_pubsub_bq_subscription_topic_name
+      }
       ports {
         container_port = 8080
       }
     }
-    service_account = var.cloud_run_jobs_service_account_email
+    service_account = var.cloud_run_service_account_email
   }
 }
 

@@ -29,3 +29,7 @@ variable "cloud_run_jobs_service_account_email" {
 variable "cloud_run_service_account_email" {
   type = string
 }
+
+variable "google_pubsub_bq_subscription_topic_name" {
+  type = string
+}

@@ -25,6 +25,10 @@ variable "cloud_run_service_account_email" {
   type = string
 }
 
-variable "dlq_to_bq_service_account_email" {
+variable "bq_subscription_service_account_email" {
   type = string
+}
+
+variable "bq_subscription_history_table_id" {
+  type        = string
 }

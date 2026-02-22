@@ -40,16 +40,28 @@ resource "google_project_iam_member" "cloud_run_service_invoker" {
   member  = "serviceAccount:${google_service_account.cloud_run_sa.email}"
 }
 
-resource "google_project_iam_member" "cloud_run_firestore_admin" {
+resource "google_project_iam_member" "cloud_run_service_firestore_admin" {
   project = var.project
   role    = "roles/datastore.owner"
   member  = "serviceAccount:${google_service_account.cloud_run_sa.email}"
 }
 
-resource "google_project_iam_member" "cloud_run_bigquery_admin" {
+resource "google_project_iam_member" "cloud_run_service_bigquery_admin" {
   project = var.project
   role    = "roles/bigquery.admin"
   member  = "serviceAccount:${google_service_account.cloud_run_sa.email}"
+}
+
+resource "google_project_iam_member" "cloud_run_service_pubsub_admin" {
+  project = var.project
+  role    = "roles/pubsub.admin"
+  member  = "serviceAccount:${google_service_account.cloud_run_sa.email}"
+}
+
+resource "google_project_iam_member" "cloud_run_jobs_bigquery_admin" {
+  project = var.project
+  role    = "roles/bigquery.dataEditor"
+  member  = "serviceAccount:${google_service_account.cloud_run_jobs_sa.email}"
 }
 
 resource "google_service_account" "cloud_run_jobs_sa" {
@@ -68,6 +80,7 @@ resource "google_project_iam_member" "cloud_run_jobs_publisher" {
   role    = "roles/pubsub.publisher"
   member  = "serviceAccount:${google_service_account.cloud_run_jobs_sa.email}"
 }
+
 
 resource "google_service_account" "cloud_scheduler_sa" {
   account_id   = "cloud-scheduler-jobs-invoker"

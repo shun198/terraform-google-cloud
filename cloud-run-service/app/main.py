@@ -17,7 +17,9 @@ db = firestore.Client(project=project)
 
 collection = db.collection(os.environ.get("FIRESTORE_COLLECTION_NAME"))
 
-topic = db.collection(os.environ.get("PUBSUB_TOPIC_NAME"))
+bq_topic = db.collection(os.environ.get("BQ_PUBSUB_TOPIC_NAME"))
+
+FIRESTORE_CHECK = (os.environ.get("FIRESTORE_CHECK"), False)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -26,7 +28,7 @@ firestore_service = FirestoreService(logger, collection)
 
 publisher = pubsub_v1.PublisherClient()
 
-bq_subscription_service = SendHistoryToBigQueryService(logger, publisher, topic)
+bq_subscription_service = SendHistoryToBigQueryService(logger, publisher, bq_topic)
 
 
 @app.post("/")
@@ -49,11 +51,14 @@ async def index(request: Request):
         try:
             decoded_str = base64.b64decode(pubsub_message["data"]).decode("utf-8").strip()
             logger.info(f"decoded_message: {decoded_str}")
-            if firestore_service.if_record_exists(decoded_str):
-                logger.info("record already exists")
-                return Response(status_code=status.HTTP_204_NO_CONTENT)
+            if FIRESTORE_CHECK:
+                is_duplicate = firestore_service.if_record_exists(decoded_str)
+                if is_duplicate:
+                    logger.info("record already exists")
+                    return Response(status_code=status.HTTP_204_NO_CONTENT)
             logger.info("enter firestore record")
-            firestore_service.enter_single_record(decoded_str)
+            if  FIRESTORE_CHECK:
+                firestore_service.enter_single_record(decoded_str)
             bq_subscription_service.regist(decoded_str)
             logger.info("request succeeded")
             return Response(status_code=status.HTTP_200_OK)

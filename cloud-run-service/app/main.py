@@ -1,5 +1,4 @@
 import base64
-import json
 import logging
 import os
 
@@ -17,9 +16,9 @@ db = firestore.Client(project=project)
 
 collection = db.collection(os.environ.get("FIRESTORE_COLLECTION_NAME"))
 
-bq_topic = db.collection(os.environ.get("BQ_PUBSUB_TOPIC_NAME"))
+bq_topic = os.environ.get('BQ_PUBSUB_TOPIC_NAME')
 
-FIRESTORE_CHECK = (os.environ.get("FIRESTORE_CHECK"), False)
+FIRESTORE_CHECK = os.environ.get("FIRESTORE_CHECK") == "True"
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -28,7 +27,12 @@ firestore_service = FirestoreService(logger, collection)
 
 publisher = pubsub_v1.PublisherClient()
 
-bq_subscription_service = SendHistoryToBigQueryService(logger, publisher, bq_topic)
+topic_path = publisher.topic_path(
+    project,
+    bq_topic
+)
+
+bq_subscription_service = SendHistoryToBigQueryService(logger, publisher, topic_path)
 
 
 @app.post("/")

@@ -4,10 +4,10 @@ from datetime import timezone, datetime
 
 
 class SendHistoryToBigQueryService:
-    def __init__(self, logger, publisher, topic):
+    def __init__(self, logger, publisher, topic_path):
         self.logger = logger
         self.publisher = publisher
-        self.topic = topic
+        self.topic_path = topic_path
 
     def regist(
         self,
@@ -23,7 +23,7 @@ class SendHistoryToBigQueryService:
             json_message["update_date"] = elapsed_days
             encoded_message = json.dumps(json_message).encode("utf-8")
             # 送信履歴テーブル更新用Pub/Subメッセージ送信
-            future = self.publisher.publish(self.topic, encoded_message)
+            future = self.publisher.publish(self.topic_path, encoded_message)
             future.result()
         except Exception as e:
             self.logger.error("Error updating history table", e)
